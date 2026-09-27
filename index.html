@@ -71,7 +71,7 @@
                         <i data-lucide="sliders" class="w-4 h-4 text-sky-500 dark:text-sky-400"></i>
                         Настройки шаблона
                     </span>
-                    <p class="text-[19px] text-slate-400 dark:text-slate-500 mt-0.5">
+                    <p class="text-[13px] text-slate-400 dark:text-slate-500 mt-0.5">
                         💡 Если не указан hex и rand то они убираются из конфига.
                     </p>
                 </div>
@@ -79,23 +79,23 @@
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-xs">
-                <div>
+                <div class="flex flex-col justify-end">
                     <label class="block font-medium text-slate-700 dark:text-slate-300 mb-1">Имя профиля (Remarks)</label>
-                    <input type="text" id="optRemarks" value="Xray Full Config" placeholder="Любое имя" class="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg px-3 py-2 text-slate-900 dark:text-slate-100 focus:outline-none focus:border-sky-500 font-mono">
+                    <input type="text" id="optRemarks" value="Xray Full Config" placeholder="Xray Full Config" class="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg px-3 py-2 text-slate-900 dark:text-slate-100 focus:outline-none focus:border-sky-500 font-mono">
                 </div>
-                <div>
+                <div class="flex flex-col justify-end">
                     <label class="block font-medium text-slate-700 dark:text-slate-300 mb-1">Задержка Noise (Delay)</label>
                     <input type="text" id="optNoiseDelay" value="1-2" placeholder="1-2" class="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg px-3 py-2 text-slate-900 dark:text-slate-100 focus:outline-none focus:border-sky-500 font-mono">
                 </div>
-                <div>
+                <div class="flex flex-col justify-end">
                     <label class="block font-medium text-slate-700 dark:text-slate-300 mb-1">SOCKS / HTTP Порты</label>
                     <div class="flex gap-2">
-                        <input type="number" id="optSocksPort" value="10808" placeholder="SOCKS" class="w-1/2 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg px-2.5 py-2 text-slate-900 dark:text-slate-100 focus:outline-none focus:border-sky-500 font-mono">
-                        <input type="number" id="optHttpPort" value="10809" placeholder="HTTP" class="w-1/2 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg px-2.5 py-2 text-slate-900 dark:text-slate-100 focus:outline-none focus:border-sky-500 font-mono">
+                        <input type="number" id="optSocksPort" value="10808" placeholder="10808" class="w-1/2 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg px-2.5 py-2 text-slate-900 dark:text-slate-100 focus:outline-none focus:border-sky-500 font-mono">
+                        <input type="number" id="optHttpPort" value="10809" placeholder="10809" class="w-1/2 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg px-2.5 py-2 text-slate-900 dark:text-slate-100 focus:outline-none focus:border-sky-500 font-mono">
                     </div>
                 </div>
-                <div>
-                    <label class="block font-medium text-slate-700 dark:text-slate-300 mb-1">KeepAlive / MTU (если указано в конфиге то берется оттуда)</label>
+                <div class="flex flex-col justify-end">
+                    <label class="block font-medium text-slate-700 dark:text-slate-300 mb-1">KeepAlive / MTU <span class="font-normal text-slate-400 text-[11px]">(из конфига в приоритете)</span></label>
                     <div class="flex gap-2">
                         <input type="number" id="optKeepAlive" value="5" placeholder="5" class="w-1/2 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg px-2.5 py-2 text-slate-900 dark:text-slate-100 focus:outline-none focus:border-sky-500 font-mono">
                         <input type="number" id="optMtu" value="1280" placeholder="1280" class="w-1/2 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg px-2.5 py-2 text-slate-900 dark:text-slate-100 focus:outline-none focus:border-sky-500 font-mono">
@@ -103,22 +103,22 @@
                 </div>
 
                 <!-- Rand Noise Settings -->
-                <div>
+                <div class="flex flex-col justify-end">
                     <label class="block font-medium text-slate-700 dark:text-slate-300 mb-1">rand-шумов, шт</label>
-                    <input type="number" id="optRandCount" value="8" placeholder="например 8" class="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg px-3 py-2 text-slate-900 dark:text-slate-100 focus:outline-none focus:border-sky-500 font-mono">
+                    <input type="number" id="optRandCount" value="8" placeholder="8" class="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg px-3 py-2 text-slate-900 dark:text-slate-100 focus:outline-none focus:border-sky-500 font-mono">
                 </div>
-                <div>
+                <div class="flex flex-col justify-end">
                     <label class="block font-medium text-slate-700 dark:text-slate-300 mb-1">Размер rand</label>
-                    <input type="text" id="optRandSize" value="23-911" placeholder="например 23-911" class="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg px-3 py-2 text-slate-900 dark:text-slate-100 focus:outline-none focus:border-sky-500 font-mono">
+                    <input type="text" id="optRandSize" value="23-911" placeholder="23-911" class="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg px-3 py-2 text-slate-900 dark:text-slate-100 focus:outline-none focus:border-sky-500 font-mono">
                 </div>
-                <div class="sm:col-span-2 lg:col-span-2">
+                <div class="sm:col-span-2 lg:col-span-2 flex flex-col justify-end">
                     <label class="block font-medium text-slate-700 dark:text-slate-300 mb-1">Задержка rand</label>
-                    <input type="text" id="optRandDelay" value="1-3" placeholder="например 1-3" class="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg px-3 py-2 text-slate-900 dark:text-slate-100 focus:outline-none focus:border-sky-500 font-mono">
+                    <input type="text" id="optRandDelay" value="1-3" placeholder="1-3" class="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg px-3 py-2 text-slate-900 dark:text-slate-100 focus:outline-none focus:border-sky-500 font-mono">
                 </div>
 
-                <div class="sm:col-span-2 lg:col-span-4">
+                <div class="sm:col-span-2 lg:col-span-4 flex flex-col justify-end">
                     <label class="block font-medium text-slate-700 dark:text-slate-300 mb-1">Packet Hex (Шум)</label>
-                    <input type="text" id="optNoisePacket" value="c90000000101ba000030ab3f91ea9b149892cca47a0c34c227c9a5e72e74d2769ebbc74ab50f284daf8bed79716ab4d3ac55e3bad1e1d24197a2" placeholder="packet-hex" class="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg px-3 py-2 text-sky-600 dark:text-sky-400 font-mono focus:outline-none focus:border-sky-500 text-xs">
+                    <input type="text" id="optNoisePacket" value="c90000000101ba000030ab3f91ea9b149892cca47a0c34c227c9a5e72e74d2769ebbc74ab50f284daf8bed79716ab4d3ac55e3bad1e1d24197a2" placeholder="c90000000101ba000030ab3f91ea9b149892cca47a0c34c227c9a5e72e74d2769ebbc74ab50f284daf8bed79716ab4d3ac55e3bad1e1d24197a2" class="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg px-3 py-2 text-sky-600 dark:text-sky-400 font-mono focus:outline-none focus:border-sky-500 text-xs">
                 </div>
             </div>
         </div>
