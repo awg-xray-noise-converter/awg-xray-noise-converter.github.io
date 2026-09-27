@@ -28,25 +28,25 @@
         code, textarea.font-mono, pre { font-family: 'Fira Code', monospace; }
     </style>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col selection:bg-sky-500 selection:text-white">
+<body class="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 min-h-screen flex flex-col selection:bg-sky-500 selection:text-white transition-colors duration-200">
 
     <!-- Header -->
-    <header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur sticky top-0 z-50">
+    <header class="border-b border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 backdrop-blur sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
             <div class="flex items-center space-x-3">
                 <div class="bg-sky-500 p-2 rounded-xl text-white shadow-lg shadow-sky-500/20">
                     <i data-lucide="zap" class="w-5 h-5"></i>
                 </div>
                 <div>
-                    <h1 class="font-bold text-base sm:text-lg leading-tight text-white">
+                    <h1 class="font-bold text-base sm:text-lg leading-tight text-slate-900 dark:text-white">
                         WG to Xray Noise Converter
                     </h1>
-                    <p class="text-xs text-slate-400">Минималистичный генератор с поддержкой dialerProxy & noise-out (сделано через Gemini)</p>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">Конвертер WG & AWG в Xray full config</p>
                 </div>
             </div>
 
             <div class="flex items-center gap-2">
-                <button id="themeToggle" class="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition-colors">
+                <button id="themeToggle" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition-colors">
                     <i data-lucide="sun" class="w-4 h-4 hidden dark:block"></i>
                     <i data-lucide="moon" class="w-4 h-4 block dark:hidden"></i>
                 </button>
@@ -58,47 +58,47 @@
     <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
 
         <!-- Notification Toast -->
-        <div id="toast" class="hidden fixed bottom-5 right-5 z-50 bg-slate-800 border border-slate-700 text-white px-4 py-3 rounded-xl shadow-2xl flex items-center gap-3 transition-all duration-300 transform translate-y-2">
+        <div id="toast" class="hidden fixed bottom-5 right-5 z-50 bg-slate-900 dark:bg-slate-800 border border-slate-700 text-white px-4 py-3 rounded-xl shadow-2xl flex items-center gap-3 transition-all duration-300 transform translate-y-2">
             <i id="toastIcon" data-lucide="check-circle" class="w-5 h-5 text-emerald-400"></i>
             <span id="toastMsg" class="text-sm font-medium">Готово</span>
         </div>
 
         <!-- Custom Options Bar -->
-        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 shadow-xl space-y-4">
-            <div class="flex items-center justify-between border-b border-slate-800 pb-3">
-                <span class="text-xs font-semibold uppercase tracking-wider text-slate-400 flex items-center gap-2">
-                    <i data-lucide="sliders" class="w-4 h-4 text-sky-400"></i>
+        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 shadow-xl space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
+                <span class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 flex items-center gap-2">
+                    <i data-lucide="sliders" class="w-4 h-4 text-sky-500 dark:text-sky-400"></i>
                     Настройки шаблона
                 </span>
-                <button id="resetDefaultsBtn" class="text-xs text-slate-400 hover:text-slate-200 underline">Сбросить настройки</button>
+                <button id="resetDefaultsBtn" class="text-xs text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 underline">Сбросить настройки</button>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-xs">
                 <div>
-                    <label class="block font-medium text-slate-300 mb-1">Имя профиля (Remarks)</label>
-                    <input type="text" id="optRemarks" value="WARP" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-slate-100 focus:outline-none focus:border-sky-500 font-mono">
+                    <label class="block font-medium text-slate-700 dark:text-slate-300 mb-1">Имя профиля (Remarks)</label>
+                    <input type="text" id="optRemarks" value="Xray Full Config" class="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg px-3 py-2 text-slate-900 dark:text-slate-100 focus:outline-none focus:border-sky-500 font-mono">
                 </div>
                 <div>
-                    <label class="block font-medium text-slate-300 mb-1">Задержка Noise (Delay)</label>
-                    <input type="text" id="optNoiseDelay" value="1-2" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-slate-100 focus:outline-none focus:border-sky-500 font-mono">
+                    <label class="block font-medium text-slate-700 dark:text-slate-300 mb-1">Задержка Noise (Delay)</label>
+                    <input type="text" id="optNoiseDelay" value="1-2" class="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg px-3 py-2 text-slate-900 dark:text-slate-100 focus:outline-none focus:border-sky-500 font-mono">
                 </div>
                 <div>
-                    <label class="block font-medium text-slate-300 mb-1">SOCKS / HTTP Порты</label>
+                    <label class="block font-medium text-slate-700 dark:text-slate-300 mb-1">SOCKS / HTTP Порты</label>
                     <div class="flex gap-2">
-                        <input type="number" id="optSocksPort" value="10808" placeholder="SOCKS" class="w-1/2 bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-2 text-slate-100 focus:outline-none focus:border-sky-500 font-mono">
-                        <input type="number" id="optHttpPort" value="10809" placeholder="HTTP" class="w-1/2 bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-2 text-slate-100 focus:outline-none focus:border-sky-500 font-mono">
+                        <input type="number" id="optSocksPort" value="10808" placeholder="SOCKS" class="w-1/2 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg px-2.5 py-2 text-slate-900 dark:text-slate-100 focus:outline-none focus:border-sky-500 font-mono">
+                        <input type="number" id="optHttpPort" value="10809" placeholder="HTTP" class="w-1/2 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg px-2.5 py-2 text-slate-900 dark:text-slate-100 focus:outline-none focus:border-sky-500 font-mono">
                     </div>
                 </div>
                 <div>
-                    <label class="block font-medium text-slate-300 mb-1">По умолчанию KeepAlive / MTU</label>
+                    <label class="block font-medium text-slate-700 dark:text-slate-300 mb-1">По умолчанию KeepAlive / MTU</label>
                     <div class="flex gap-2">
-                        <input type="number" id="optKeepAlive" value="5" placeholder="KeepAlive" class="w-1/2 bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-2 text-slate-100 focus:outline-none focus:border-sky-500 font-mono">
-                        <input type="number" id="optMtu" value="1280" placeholder="MTU" class="w-1/2 bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-2 text-slate-100 focus:outline-none focus:border-sky-500 font-mono">
+                        <input type="number" id="optKeepAlive" value="5" placeholder="KeepAlive" class="w-1/2 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg px-2.5 py-2 text-slate-900 dark:text-slate-100 focus:outline-none focus:border-sky-500 font-mono">
+                        <input type="number" id="optMtu" value="1280" placeholder="MTU" class="w-1/2 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg px-2.5 py-2 text-slate-900 dark:text-slate-100 focus:outline-none focus:border-sky-500 font-mono">
                     </div>
                 </div>
                 <div class="sm:col-span-2 lg:col-span-4">
-                    <label class="block font-medium text-slate-300 mb-1">Packet Hex (Шум)</label>
-                    <input type="text" id="optNoisePacket" value="c90000000101ba000030ab3f91ea9b149892cca47a0c34c227c9a5e72e74d2769ebbc74ab50f284daf8bed79716ab4d3ac55e3bad1e1d24197a2" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sky-400 font-mono focus:outline-none focus:border-sky-500 text-xs">
+                    <label class="block font-medium text-slate-700 dark:text-slate-300 mb-1">Packet Hex (Шум)</label>
+                    <input type="text" id="optNoisePacket" value="c90000000101ba000030ab3f91ea9b149892cca47a0c34c227c9a5e72e74d2769ebbc74ab50f284daf8bed79716ab4d3ac55e3bad1e1d24197a2" class="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg px-3 py-2 text-sky-600 dark:text-sky-400 font-mono focus:outline-none focus:border-sky-500 text-xs">
                 </div>
             </div>
         </div>
@@ -107,14 +107,14 @@
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
             <!-- Left Panel: Input WireGuard Config -->
-            <div class="flex flex-col bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-xl">
-                <div class="bg-slate-800/50 px-4 py-3 border-b border-slate-800 flex items-center justify-between">
+            <div class="flex flex-col bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden shadow-xl">
+                <div class="bg-slate-100/70 dark:bg-slate-800/50 px-4 py-3 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
                     <div class="flex items-center space-x-2">
-                        <i data-lucide="file-text" class="w-4 h-4 text-emerald-400"></i>
-                        <span class="font-semibold text-xs sm:text-sm">WireGuard или AmneziaWG.conf</span>
+                        <i data-lucide="file-text" class="w-4 h-4 text-emerald-600 dark:text-emerald-400"></i>
+                        <span class="font-semibold text-xs sm:text-sm">Конфигурация AmneziaWG или WireGuard (.conf)</span>
                     </div>
                     <div class="flex items-center gap-2">
-                        <button id="clearBtn" class="text-xs text-slate-400 hover:text-slate-200 px-2 py-1 rounded hover:bg-slate-800">Очистить</button>
+                        <button id="clearBtn" class="text-xs text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 px-2 py-1 rounded hover:bg-slate-200 dark:hover:bg-slate-800">Очистить</button>
                         <label class="text-xs bg-sky-600 hover:bg-sky-500 text-white font-medium px-2.5 py-1 rounded-md cursor-pointer transition-colors flex items-center gap-1 shadow-md shadow-sky-600/20">
                             <i data-lucide="upload" class="w-3.5 h-3.5"></i>
                             <span>Файл</span>
@@ -129,7 +129,7 @@
                         <span>Перетащите `.conf` файл сюда</span>
                     </div>
 
-                    <textarea id="wgInput" spellcheck="false" class="w-full flex-1 min-h-[420px] bg-slate-950 text-slate-200 p-4 rounded-xl border border-slate-800 font-mono text-xs focus:outline-none focus:border-sky-500/80 resize-y" placeholder="[Interface]
+                    <textarea id="wgInput" spellcheck="false" class="w-full flex-1 min-h-[420px] bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-200 p-4 rounded-xl border border-slate-200 dark:border-slate-800 font-mono text-xs focus:outline-none focus:border-sky-500/80 resize-y" placeholder="[Interface]
 PrivateKey = ...
 Address = ...
 DNS = ...
@@ -143,14 +143,14 @@ PersistentKeepalive = 5"></textarea>
             </div>
 
             <!-- Right Panel: Output Xray JSON -->
-            <div class="flex flex-col bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-xl">
-                <div class="bg-slate-800/50 px-4 py-3 border-b border-slate-800 flex items-center justify-between">
+            <div class="flex flex-col bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden shadow-xl">
+                <div class="bg-slate-100/70 dark:bg-slate-800/50 px-4 py-3 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
                     <div class="flex items-center space-x-2">
-                        <i data-lucide="file-json" class="w-4 h-4 text-sky-400"></i>
-                        <span class="font-semibold text-xs sm:text-sm">Строгий Xray JSON</span>
+                        <i data-lucide="file-json" class="w-4 h-4 text-sky-600 dark:text-sky-400"></i>
+                        <span class="font-semibold text-xs sm:text-sm">Xray full config (JSON)</span>
                     </div>
                     <div class="flex items-center gap-2">
-                        <button id="copyBtn" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 font-medium px-2.5 py-1 rounded-md transition-colors flex items-center gap-1 border border-slate-700">
+                        <button id="copyBtn" class="text-xs bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-medium px-2.5 py-1 rounded-md transition-colors flex items-center gap-1 border border-slate-200 dark:border-slate-700">
                             <i data-lucide="copy" class="w-3.5 h-3.5"></i>
                             <span>Скопировать</span>
                         </button>
@@ -162,7 +162,7 @@ PersistentKeepalive = 5"></textarea>
                 </div>
 
                 <div class="flex-1 p-4 flex flex-col">
-                    <pre id="jsonOutput" class="w-full flex-1 min-h-[420px] bg-slate-950 text-sky-300 p-4 rounded-xl border border-slate-800 font-mono text-xs overflow-auto max-h-[520px]">// Сюда сгенерируется конфигурация JSON</pre>
+                    <pre id="jsonOutput" class="w-full flex-1 min-h-[420px] bg-slate-50 dark:bg-slate-950 text-sky-700 dark:text-sky-300 p-4 rounded-xl border border-slate-200 dark:border-slate-800 font-mono text-xs overflow-auto max-h-[520px]">// Сюда сгенерируется конфигурация JSON</pre>
                 </div>
             </div>
         </div>
@@ -191,8 +191,16 @@ PersistentKeepalive = 5"></textarea>
         const fileInput = document.getElementById('fileInput');
 
         // Theme Toggle
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'light') {
+            document.documentElement.classList.remove('dark');
+        } else {
+            document.documentElement.classList.add('dark');
+        }
+
         document.getElementById('themeToggle').addEventListener('click', () => {
-            document.documentElement.classList.toggle('dark');
+            const isDark = document.documentElement.classList.toggle('dark');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
         });
 
         function showToast(msg, isError = false) {
@@ -286,7 +294,6 @@ PersistentKeepalive = 5"></textarea>
             const defaultMtu = parseInt(optMtu.value, 10) || 1280;
             const defaultKeepAlive = parseInt(optKeepAlive.value, 10) || 5;
 
-            // DNS: Custom config or Cloudflare IPv4+IPv6
             const dnsList = (parsed.dns && parsed.dns.length > 0) ? parsed.dns : [
                 "1.1.1.1",
                 "1.0.0.1",
@@ -303,12 +310,12 @@ PersistentKeepalive = 5"></textarea>
                             "0.0.0.0/0",
                             "::/0"
                         ],
-                        endpoint: parsed.endpoint || "212.8.250.234:5060",
+                        endpoint: parsed.endpoint,
                         keepAlive: parsed.keepAlive !== null ? parsed.keepAlive : defaultKeepAlive,
-                        publicKey: parsed.publicKey || ""
+                        publicKey: parsed.publicKey
                     }
                 ],
-                secretKey: parsed.secretKey || ""
+                secretKey: parsed.secretKey
             };
 
             if (parsed.reserved && parsed.reserved.length > 0) {
@@ -400,16 +407,23 @@ PersistentKeepalive = 5"></textarea>
         function render() {
             const text = wgInput.value.trim();
             if (!text) {
-                jsonOutput.textContent = "// Вставьте Wireguard (.conf) конфигурацию слева";
+                jsonOutput.textContent = "Вставьте Wireguard (.conf) конфигурацию слева";
                 return;
             }
 
             try {
                 const parsed = parseWG(text);
+
+                // Валидация обязательных параметров
+                if (!parsed.secretKey || !parsed.publicKey || !parsed.endpoint) {
+                    jsonOutput.textContent = "Некорректная конфигурация .conf";
+                    return;
+                }
+
                 const finalJson = generateStrictXray(parsed);
                 jsonOutput.textContent = JSON.stringify(finalJson, null, 2);
             } catch (e) {
-                jsonOutput.textContent = `// Ошибка генерации: ${e.message}`;
+                jsonOutput.textContent = "Некорректная конфигурация .conf";
             }
         }
 
@@ -425,7 +439,7 @@ PersistentKeepalive = 5"></textarea>
         });
 
         document.getElementById('resetDefaultsBtn').addEventListener('click', () => {
-            optRemarks.value = 'WARP';
+            optRemarks.value = 'Xray Full Config';
             optNoiseDelay.value = '1-2';
             optNoisePacket.value = DEFAULT_NOISE;
             optSocksPort.value = 10808;
