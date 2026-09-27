@@ -41,7 +41,7 @@
                     <h1 class="font-bold text-base sm:text-lg leading-tight text-white">
                         WG to Xray Noise Converter
                     </h1>
-                    <p class="text-xs text-slate-400">Минималистичный генератор с поддержкой dialerProxy & noise-out (сделано нейросетью Gemini)</p>
+                    <p class="text-xs text-slate-400">Минималистичный генератор с поддержкой dialerProxy & noise-out (сделано через Gemini)</p>
                 </div>
             </div>
 
@@ -111,10 +111,9 @@
                 <div class="bg-slate-800/50 px-4 py-3 border-b border-slate-800 flex items-center justify-between">
                     <div class="flex items-center space-x-2">
                         <i data-lucide="file-text" class="w-4 h-4 text-emerald-400"></i>
-                        <span class="font-semibold text-xs sm:text-sm">WireGuard / WARP .conf</span>
+                        <span class="font-semibold text-xs sm:text-sm">WireGuard или AmneziaWG.conf</span>
                     </div>
                     <div class="flex items-center gap-2">
-                        <button id="loadSampleBtn" class="text-xs text-sky-400 hover:text-sky-300 px-2 py-1 rounded bg-sky-950/60 border border-sky-800/50">Пример WARP</button>
                         <button id="clearBtn" class="text-xs text-slate-400 hover:text-slate-200 px-2 py-1 rounded hover:bg-slate-800">Очистить</button>
                         <label class="text-xs bg-sky-600 hover:bg-sky-500 text-white font-medium px-2.5 py-1 rounded-md cursor-pointer transition-colors flex items-center gap-1 shadow-md shadow-sky-600/20">
                             <i data-lucide="upload" class="w-3.5 h-3.5"></i>
@@ -131,13 +130,13 @@
                     </div>
 
                     <textarea id="wgInput" spellcheck="false" class="w-full flex-1 min-h-[420px] bg-slate-950 text-slate-200 p-4 rounded-xl border border-slate-800 font-mono text-xs focus:outline-none focus:border-sky-500/80 resize-y" placeholder="[Interface]
-PrivateKey = uCD0U5zcryO5BQjFqfBrkeYr70Kl5qTC5EZOh3ptmnU=
-Address = 172.16.0.2/32, 2606:4700:110:887d:1902:bd09:214:74f0/128
-DNS = 1.1.1.1, 1.0.0.1
+PrivateKey = ...
+Address = ...
+DNS = ...
 
 [Peer]
-PublicKey = ASYeUb41HLWEo8JIClCokKmSZB8zNxTrM5GoAsraqHU=
-Endpoint = 212.8.250.234:5060
+PublicKey = ...
+Endpoint = ...
 AllowedIPs = 0.0.0.0/0, ::/0
 PersistentKeepalive = 5"></textarea>
                 </div>
@@ -171,18 +170,6 @@ PersistentKeepalive = 5"></textarea>
 
     <script>
         lucide.createIcons();
-
-        const SAMPLE_WARP = `[Interface]
-# WARP Account Config
-PrivateKey = uCD0U5zcryO5BQjFqfBrkeYr70Kl5qTC5EZOh3ptmnU=
-Address = 172.16.0.2/32, 2606:4700:110:887d:1902:bd09:214:74f0/128
-DNS = 1.1.1.1, 1.0.0.1, 2606:4700:4700::1111, 2606:4700:4700::1001
-
-[Peer]
-PublicKey = ASYeUb41HLWEo8JIClCokKmSZB8zNxTrM5GoAsraqHU=
-Endpoint = 212.8.250.234:5060
-AllowedIPs = 0.0.0.0/0, ::/0
-PersistentKeepalive = 5`;
 
         const DEFAULT_NOISE = "c90000000101ba000030ab3f91ea9b149892cca47a0c34c227c9a5e72e74d2769ebbc74ab50f284daf8bed79716ab4d3ac55e3bad1e1d24197a2";
 
@@ -431,12 +418,6 @@ PersistentKeepalive = 5`;
             el.addEventListener('input', render);
         });
 
-        document.getElementById('loadSampleBtn').addEventListener('click', () => {
-            wgInput.value = SAMPLE_WARP;
-            render();
-            showToast("Загружен шаблон WARP");
-        });
-
         document.getElementById('clearBtn').addEventListener('click', () => {
             wgInput.value = '';
             render();
@@ -523,8 +504,7 @@ PersistentKeepalive = 5`;
             showToast("Скачан config.json");
         });
 
-        // Auto load sample on start
-        wgInput.value = SAMPLE_WARP;
+        // Initial empty state render
         render();
     </script>
 </body>
