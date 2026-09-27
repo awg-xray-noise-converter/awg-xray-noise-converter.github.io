@@ -118,9 +118,9 @@
 
                 <!-- Option: Disable IPv6 -->
                 <div class="sm:col-span-2 lg:col-span-4 flex items-center gap-2 pt-1">
-                    <input type="checkbox" id="optDisableIpv6" class="w-4 h-4 text-sky-600 bg-slate-50 dark:bg-slate-950 border-slate-300 dark:border-slate-800 rounded focus:ring-sky-500">
+                    <input type="checkbox" id="optDisableIpv6" autocomplete="off" class="w-4 h-4 text-sky-600 bg-slate-50 dark:bg-slate-950 border-slate-300 dark:border-slate-800 rounded focus:ring-sky-500">
                     <label for="optDisableIpv6" class="font-medium text-slate-700 dark:text-slate-300 cursor-pointer select-none">
-                        Отключить IPv6 <span class="font-normal text-slate-400 dark:text-slate-500 text-[11px]">(если имеются проблемы с подключением)</span>
+                        Отключить IPv6 <span class="font-normal text-slate-400 dark:text-slate-500 text-[11px]">(удаляет IPv6 из address, allowedIPs и DNS)</span>
                     </label>
                 </div>
 
@@ -217,6 +217,11 @@ PersistentKeepalive = 5"></textarea>
         const optRandDelay = document.getElementById('optRandDelay');
         const optDisableIpv6 = document.getElementById('optDisableIpv6');
 
+        // Принудительно отключаем чекбокс при загрузке страницы
+        if (optDisableIpv6) {
+            optDisableIpv6.checked = false;
+        }
+
         const toast = document.getElementById('toast');
         const toastMsg = document.getElementById('toastMsg');
         const dropZone = document.getElementById('dropZone');
@@ -310,6 +315,4 @@ PersistentKeepalive = 5"></textarea>
                             res.reserved = val.replace(/[\[\]]/g, '').split(',').map(s => parseInt(s.trim())).filter(n => !isNaN(n));
                         }
                     } else if (section === 'peer') {
-                        if (key === 'publickey') res.publicKey = val;
-                        else if (key === 'endpoint') res.endpoint = val;
-                        else if (key === 'persistentkeepalive') res.keepAlive = p
+                        if (key === 'publickey') r
