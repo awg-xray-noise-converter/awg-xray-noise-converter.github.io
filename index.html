@@ -85,7 +85,7 @@
                 </div>
                 <div>
                     <label class="block font-medium text-slate-700 dark:text-slate-300 mb-1">Задержка Noise (Delay)</label>
-                    <input type="text" id="optNoiseDelay" value="1-2" placeholder="Оставить пустым для отключения" class="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg px-3 py-2 text-slate-900 dark:text-slate-100 focus:outline-none focus:border-sky-500 font-mono">
+                    <input type="text" id="optNoiseDelay" value="1-2" placeholder="1-2" class="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg px-3 py-2 text-slate-900 dark:text-slate-100 focus:outline-none focus:border-sky-500 font-mono">
                 </div>
                 <div>
                     <label class="block font-medium text-slate-700 dark:text-slate-300 mb-1">SOCKS / HTTP Порты</label>
@@ -97,15 +97,15 @@
                 <div>
                     <label class="block font-medium text-slate-700 dark:text-slate-300 mb-1">По умолчанию KeepAlive / MTU</label>
                     <div class="flex gap-2">
-                        <input type="number" id="optKeepAlive" value="5" placeholder="KeepAlive" class="w-1/2 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg px-2.5 py-2 text-slate-900 dark:text-slate-100 focus:outline-none focus:border-sky-500 font-mono">
-                        <input type="number" id="optMtu" value="1280" placeholder="MTU" class="w-1/2 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg px-2.5 py-2 text-slate-900 dark:text-slate-100 focus:outline-none focus:border-sky-500 font-mono">
+                        <input type="number" id="optKeepAlive" value="5" placeholder="5" class="w-1/2 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg px-2.5 py-2 text-slate-900 dark:text-slate-100 focus:outline-none focus:border-sky-500 font-mono">
+                        <input type="number" id="optMtu" value="1280" placeholder="1280" class="w-1/2 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg px-2.5 py-2 text-slate-900 dark:text-slate-100 focus:outline-none focus:border-sky-500 font-mono">
                     </div>
                 </div>
 
                 <!-- Rand Noise Settings -->
                 <div>
                     <label class="block font-medium text-slate-700 dark:text-slate-300 mb-1">rand-шумов, шт</label>
-                    <input type="number" id="optRandCount" value="8" placeholder="0" class="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg px-3 py-2 text-slate-900 dark:text-slate-100 focus:outline-none focus:border-sky-500 font-mono">
+                    <input type="number" id="optRandCount" value="8" placeholder="например 8" class="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg px-3 py-2 text-slate-900 dark:text-slate-100 focus:outline-none focus:border-sky-500 font-mono">
                 </div>
                 <div>
                     <label class="block font-medium text-slate-700 dark:text-slate-300 mb-1">Размер rand</label>
@@ -118,7 +118,7 @@
 
                 <div class="sm:col-span-2 lg:col-span-4">
                     <label class="block font-medium text-slate-700 dark:text-slate-300 mb-1">Packet Hex (Шум)</label>
-                    <input type="text" id="optNoisePacket" value="c90000000101ba000030ab3f91ea9b149892cca47a0c34c227c9a5e72e74d2769ebbc74ab50f284daf8bed79716ab4d3ac55e3bad1e1d24197a2" placeholder="Оставить пустым для отключения" class="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg px-3 py-2 text-sky-600 dark:text-sky-400 font-mono focus:outline-none focus:border-sky-500 text-xs">
+                    <input type="text" id="optNoisePacket" value="c90000000101ba000030ab3f91ea9b149892cca47a0c34c227c9a5e72e74d2769ebbc74ab50f284daf8bed79716ab4d3ac55e3bad1e1d24197a2" placeholder="packet-hex" class="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg px-3 py-2 text-sky-600 dark:text-sky-400 font-mono focus:outline-none focus:border-sky-500 text-xs">
                 </div>
             </div>
         </div>
