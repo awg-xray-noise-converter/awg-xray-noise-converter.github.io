@@ -65,12 +65,17 @@
 
         <!-- Custom Options Bar -->
         <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 shadow-xl space-y-4">
-            <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
-                <span class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 flex items-center gap-2">
-                    <i data-lucide="sliders" class="w-4 h-4 text-sky-500 dark:text-sky-400"></i>
-                    Настройки шаблона
-                </span>
-                <button id="resetDefaultsBtn" class="text-xs text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 underline">Сбросить настройки</button>
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3 gap-2">
+                <div>
+                    <span class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 flex items-center gap-2">
+                        <i data-lucide="sliders" class="w-4 h-4 text-sky-500 dark:text-sky-400"></i>
+                        Настройки шаблона
+                    </span>
+                    <p class="text-[19px] text-slate-400 dark:text-slate-500 mt-0.5">
+                        💡 Если не указан hex и rand то они убираются из конфига.
+                    </p>
+                </div>
+                <button id="resetDefaultsBtn" class="text-xs text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 underline self-start sm:self-auto">Сбросить настройки</button>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-xs">
@@ -80,7 +85,7 @@
                 </div>
                 <div>
                     <label class="block font-medium text-slate-700 dark:text-slate-300 mb-1">Задержка Noise (Delay)</label>
-                    <input type="text" id="optNoiseDelay" value="1-2" class="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg px-3 py-2 text-slate-900 dark:text-slate-100 focus:outline-none focus:border-sky-500 font-mono">
+                    <input type="text" id="optNoiseDelay" value="1-2" placeholder="Оставить пустым для отключения" class="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg px-3 py-2 text-slate-900 dark:text-slate-100 focus:outline-none focus:border-sky-500 font-mono">
                 </div>
                 <div>
                     <label class="block font-medium text-slate-700 dark:text-slate-300 mb-1">SOCKS / HTTP Порты</label>
@@ -96,9 +101,24 @@
                         <input type="number" id="optMtu" value="1280" placeholder="MTU" class="w-1/2 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg px-2.5 py-2 text-slate-900 dark:text-slate-100 focus:outline-none focus:border-sky-500 font-mono">
                     </div>
                 </div>
+
+                <!-- Rand Noise Settings -->
+                <div>
+                    <label class="block font-medium text-slate-700 dark:text-slate-300 mb-1">rand-шумов, шт</label>
+                    <input type="number" id="optRandCount" value="8" placeholder="0" class="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg px-3 py-2 text-slate-900 dark:text-slate-100 focus:outline-none focus:border-sky-500 font-mono">
+                </div>
+                <div>
+                    <label class="block font-medium text-slate-700 dark:text-slate-300 mb-1">Размер rand</label>
+                    <input type="text" id="optRandSize" value="23-911" placeholder="например 23-911" class="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg px-3 py-2 text-slate-900 dark:text-slate-100 focus:outline-none focus:border-sky-500 font-mono">
+                </div>
+                <div class="sm:col-span-2 lg:col-span-2">
+                    <label class="block font-medium text-slate-700 dark:text-slate-300 mb-1">Задержка rand</label>
+                    <input type="text" id="optRandDelay" value="1-3" placeholder="например 1-3" class="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg px-3 py-2 text-slate-900 dark:text-slate-100 focus:outline-none focus:border-sky-500 font-mono">
+                </div>
+
                 <div class="sm:col-span-2 lg:col-span-4">
                     <label class="block font-medium text-slate-700 dark:text-slate-300 mb-1">Packet Hex (Шум)</label>
-                    <input type="text" id="optNoisePacket" value="c90000000101ba000030ab3f91ea9b149892cca47a0c34c227c9a5e72e74d2769ebbc74ab50f284daf8bed79716ab4d3ac55e3bad1e1d24197a2" class="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg px-3 py-2 text-sky-600 dark:text-sky-400 font-mono focus:outline-none focus:border-sky-500 text-xs">
+                    <input type="text" id="optNoisePacket" value="c90000000101ba000030ab3f91ea9b149892cca47a0c34c227c9a5e72e74d2769ebbc74ab50f284daf8bed79716ab4d3ac55e3bad1e1d24197a2" placeholder="Оставить пустым для отключения" class="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg px-3 py-2 text-sky-600 dark:text-sky-400 font-mono focus:outline-none focus:border-sky-500 text-xs">
                 </div>
             </div>
         </div>
@@ -183,6 +203,10 @@ PersistentKeepalive = 5"></textarea>
         const optHttpPort = document.getElementById('optHttpPort');
         const optKeepAlive = document.getElementById('optKeepAlive');
         const optMtu = document.getElementById('optMtu');
+
+        const optRandCount = document.getElementById('optRandCount');
+        const optRandSize = document.getElementById('optRandSize');
+        const optRandDelay = document.getElementById('optRandDelay');
 
         const toast = document.getElementById('toast');
         const toastMsg = document.getElementById('toastMsg');
@@ -322,6 +346,35 @@ PersistentKeepalive = 5"></textarea>
                 wgOutboundSettings.reserved = parsed.reserved;
             }
 
+            // Build Noise Array
+            const noises = [];
+
+            const noiseDelayVal = optNoiseDelay.value.trim();
+            const noisePacketVal = optNoisePacket.value.trim();
+
+            if (noiseDelayVal && noisePacketVal) {
+                noises.push({
+                    delay: noiseDelayVal,
+                    packet: noisePacketVal,
+                    type: "hex"
+                });
+            }
+
+            const randCount = parseInt(optRandCount.value, 10) || 0;
+            const randSize = optRandSize.value.trim();
+            const randDelay = optRandDelay.value.trim();
+
+            if (randCount > 0 && randSize) {
+                for (let i = 0; i < randCount; i++) {
+                    const randObj = {
+                        delay: randDelay || "1-3",
+                        packet: randSize,
+                        type: "rand"
+                    };
+                    noises.push(randObj);
+                }
+            }
+
             const config = {
                 dns: {
                     servers: dnsList
@@ -377,13 +430,7 @@ PersistentKeepalive = 5"></textarea>
                         protocol: "freedom",
                         settings: {
                             domainStrategy: "AsIs",
-                            noises: [
-                                {
-                                    delay: optNoiseDelay.value.trim() || "1-2",
-                                    packet: optNoisePacket.value.trim() || DEFAULT_NOISE,
-                                    type: "hex"
-                                }
-                            ]
+                            noises: noises
                         },
                         tag: "noise-out"
                     }
@@ -407,28 +454,27 @@ PersistentKeepalive = 5"></textarea>
         function render() {
             const text = wgInput.value.trim();
             if (!text) {
-                jsonOutput.textContent = "Вставьте Wireguard (.conf) конфигурацию слева";
+                jsonOutput.textContent = "// Вставьте Wireguard (.conf) конфигурацию слева";
                 return;
             }
 
             try {
                 const parsed = parseWG(text);
 
-                // Валидация обязательных параметров
                 if (!parsed.secretKey || !parsed.publicKey || !parsed.endpoint) {
-                    jsonOutput.textContent = "Некорректная конфигурация .conf";
+                    jsonOutput.textContent = "// Некорректная конфигурация";
                     return;
                 }
 
                 const finalJson = generateStrictXray(parsed);
                 jsonOutput.textContent = JSON.stringify(finalJson, null, 2);
             } catch (e) {
-                jsonOutput.textContent = "Некорректная конфигурация .conf";
+                jsonOutput.textContent = "// Некорректная конфигурация";
             }
         }
 
         // Listeners
-        [wgInput, optRemarks, optNoiseDelay, optNoisePacket, optSocksPort, optHttpPort, optKeepAlive, optMtu].forEach(el => {
+        [wgInput, optRemarks, optNoiseDelay, optNoisePacket, optSocksPort, optHttpPort, optKeepAlive, optMtu, optRandCount, optRandSize, optRandDelay].forEach(el => {
             el.addEventListener('input', render);
         });
 
@@ -446,6 +492,9 @@ PersistentKeepalive = 5"></textarea>
             optHttpPort.value = 10809;
             optKeepAlive.value = 5;
             optMtu.value = 1280;
+            optRandCount.value = 8;
+            optRandSize.value = '23-911';
+            optRandDelay.value = '1-3';
             render();
             showToast("Настройки сброшены");
         });
