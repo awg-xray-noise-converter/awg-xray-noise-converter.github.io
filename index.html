@@ -97,7 +97,7 @@
                 <div class="flex flex-col justify-end">
                     <label class="block font-medium text-slate-700 dark:text-slate-300 mb-1">KeepAlive / MTU <span class="font-normal text-slate-400 text-[11px]">(из конфига в приоритете)</span></label>
                     <div class="flex gap-2">
-                        <input type="number" id="optKeepAlive" value="25" placeholder="25" class="w-1/2 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg px-2.5 py-2 text-slate-900 dark:text-slate-100 focus:outline-none focus:border-sky-500 font-mono">
+                        <input type="number" id="optKeepAlive" value="5" placeholder="5" class="w-1/2 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg px-2.5 py-2 text-slate-900 dark:text-slate-100 focus:outline-none focus:border-sky-500 font-mono">
                         <input type="number" id="optMtu" value="1280" placeholder="1280" class="w-1/2 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg px-2.5 py-2 text-slate-900 dark:text-slate-100 focus:outline-none focus:border-sky-500 font-mono">
                     </div>
                 </div>
@@ -114,6 +114,14 @@
                 <div class="sm:col-span-2 lg:col-span-2 flex flex-col justify-end">
                     <label class="block font-medium text-slate-700 dark:text-slate-300 mb-1">Задержка rand</label>
                     <input type="text" id="optRandDelay" value="1-3" placeholder="1-3" class="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg px-3 py-2 text-slate-900 dark:text-slate-100 focus:outline-none focus:border-sky-500 font-mono">
+                </div>
+
+                <!-- Option: Disable IPv6 -->
+                <div class="sm:col-span-2 lg:col-span-4 flex items-center gap-2 pt-1">
+                    <input type="checkbox" id="optDisableIpv6" class="w-4 h-4 text-sky-600 bg-slate-50 dark:bg-slate-950 border-slate-300 dark:border-slate-800 rounded focus:ring-sky-500">
+                    <label for="optDisableIpv6" class="font-medium text-slate-700 dark:text-slate-300 cursor-pointer select-none">
+                        Отключить IPv6 <span class="font-normal text-slate-400 dark:text-slate-500 text-[11px]">(если имеются проблемы с подключением)</span>
+                    </label>
                 </div>
 
                 <div class="sm:col-span-2 lg:col-span-4 flex flex-col justify-end">
@@ -207,6 +215,7 @@ PersistentKeepalive = 5"></textarea>
         const optRandCount = document.getElementById('optRandCount');
         const optRandSize = document.getElementById('optRandSize');
         const optRandDelay = document.getElementById('optRandDelay');
+        const optDisableIpv6 = document.getElementById('optDisableIpv6');
 
         const toast = document.getElementById('toast');
         const toastMsg = document.getElementById('toastMsg');
@@ -303,272 +312,4 @@ PersistentKeepalive = 5"></textarea>
                     } else if (section === 'peer') {
                         if (key === 'publickey') res.publicKey = val;
                         else if (key === 'endpoint') res.endpoint = val;
-                        else if (key === 'persistentkeepalive') res.keepAlive = parseInt(val, 10) || null;
-                    }
-                }
-            }
-
-            return res;
-        }
-
-        // Generate Strict JSON Target Structure
-        function generateStrictXray(parsed) {
-            const socksPort = parseInt(optSocksPort.value, 10) || 10808;
-            const httpPort = parseInt(optHttpPort.value, 10) || 10809;
-            const defaultMtu = parseInt(optMtu.value, 10) || 1280;
-            const defaultKeepAlive = parseInt(optKeepAlive.value, 10) || 5;
-
-            const dnsList = (parsed.dns && parsed.dns.length > 0) ? parsed.dns : [
-                "1.1.1.1",
-                "1.0.0.1",
-                "2606:4700:4700::1111",
-                "2606:4700:4700::1001"
-            ];
-
-            const wgOutboundSettings = {
-                address: parsed.address.length > 0 ? parsed.address : ["172.16.0.2/32"],
-                mtu: parsed.mtu || defaultMtu,
-                peers: [
-                    {
-                        allowedIPs: [
-                            "0.0.0.0/0",
-                            "::/0"
-                        ],
-                        endpoint: parsed.endpoint,
-                        keepAlive: parsed.keepAlive !== null ? parsed.keepAlive : defaultKeepAlive,
-                        publicKey: parsed.publicKey
-                    }
-                ],
-                secretKey: parsed.secretKey
-            };
-
-            if (parsed.reserved && parsed.reserved.length > 0) {
-                wgOutboundSettings.reserved = parsed.reserved;
-            }
-
-            // Build Noise Array
-            const noises = [];
-
-            const noiseDelayVal = optNoiseDelay.value.trim();
-            const noisePacketVal = optNoisePacket.value.trim();
-
-            if (noiseDelayVal && noisePacketVal) {
-                noises.push({
-                    delay: noiseDelayVal,
-                    packet: noisePacketVal,
-                    type: "hex"
-                });
-            }
-
-            const randCount = parseInt(optRandCount.value, 10) || 0;
-            const randSize = optRandSize.value.trim();
-            const randDelay = optRandDelay.value.trim();
-
-            if (randCount > 0 && randSize) {
-                for (let i = 0; i < randCount; i++) {
-                    const randObj = {
-                        delay: randDelay || "1-3",
-                        packet: randSize,
-                        type: "rand"
-                    };
-                    noises.push(randObj);
-                }
-            }
-
-            const config = {
-                dns: {
-                    servers: dnsList
-                },
-                inbounds: [
-                    {
-                        listen: "127.0.0.1",
-                        port: socksPort,
-                        protocol: "socks",
-                        settings: {
-                            auth: "noauth",
-                            udp: true
-                        },
-                        sniffing: {
-                            destOverride: [
-                                "http",
-                                "tls"
-                            ],
-                            enabled: true
-                        },
-                        tag: "socks-in"
-                    },
-                    {
-                        listen: "127.0.0.1",
-                        port: httpPort,
-                        protocol: "http",
-                        settings: {},
-                        sniffing: {
-                            destOverride: [
-                                "http",
-                                "tls"
-                            ],
-                            enabled: true
-                        },
-                        tag: "http-in"
-                    }
-                ],
-                log: {
-                    loglevel: "warning"
-                },
-                outbounds: [
-                    {
-                        protocol: "wireguard",
-                        settings: wgOutboundSettings,
-                        streamSettings: {
-                            sockopt: {
-                                dialerProxy: "noise-out"
-                            }
-                        },
-                        tag: "conf"
-                    },
-                    {
-                        protocol: "freedom",
-                        settings: {
-                            domainStrategy: "AsIs",
-                            noises: noises
-                        },
-                        tag: "noise-out"
-                    }
-                ],
-                remarks: optRemarks.value.trim() || parsed.remarkName || "Config",
-                routing: {
-                    domainStrategy: "AsIs",
-                    rules: [
-                        {
-                            network: "tcp,udp",
-                            outboundTag: "conf",
-                            type: "field"
-                        }
-                    ]
-                }
-            };
-
-            return config;
-        }
-
-        function render() {
-            const text = wgInput.value.trim();
-            if (!text) {
-                jsonOutput.textContent = "// Вставьте Wireguard (.conf) конфигурацию слева";
-                return;
-            }
-
-            try {
-                const parsed = parseWG(text);
-
-                if (!parsed.secretKey || !parsed.publicKey || !parsed.endpoint) {
-                    jsonOutput.textContent = "// Некорректная конфигурация";
-                    return;
-                }
-
-                const finalJson = generateStrictXray(parsed);
-                jsonOutput.textContent = JSON.stringify(finalJson, null, 2);
-            } catch (e) {
-                jsonOutput.textContent = "// Некорректная конфигурация";
-            }
-        }
-
-        // Listeners
-        [wgInput, optRemarks, optNoiseDelay, optNoisePacket, optSocksPort, optHttpPort, optKeepAlive, optMtu, optRandCount, optRandSize, optRandDelay].forEach(el => {
-            el.addEventListener('input', render);
-        });
-
-        document.getElementById('clearBtn').addEventListener('click', () => {
-            wgInput.value = '';
-            render();
-            showToast("Очищено");
-        });
-
-        document.getElementById('resetDefaultsBtn').addEventListener('click', () => {
-            optRemarks.value = 'Xray Full Config';
-            optNoiseDelay.value = '1-2';
-            optNoisePacket.value = DEFAULT_NOISE;
-            optSocksPort.value = 10808;
-            optHttpPort.value = 10809;
-            optKeepAlive.value = 5;
-            optMtu.value = 1280;
-            optRandCount.value = 8;
-            optRandSize.value = '23-911';
-            optRandDelay.value = '1-3';
-            render();
-            showToast("Настройки сброшены");
-        });
-
-        // Drag & drop
-        ['dragenter', 'dragover'].forEach(evt => {
-            dropZone.addEventListener(evt, (e) => {
-                e.preventDefault();
-                dropOverlay.classList.remove('hidden');
-                dropOverlay.classList.add('flex');
-            });
-        });
-
-        ['dragleave', 'drop'].forEach(evt => {
-            dropZone.addEventListener(evt, (e) => {
-                e.preventDefault();
-                dropOverlay.classList.add('hidden');
-                dropOverlay.classList.remove('flex');
-            });
-        });
-
-        dropZone.addEventListener('drop', (e) => {
-            if (e.dataTransfer.files.length > 0) {
-                readFile(e.dataTransfer.files[0]);
-            }
-        });
-
-        fileInput.addEventListener('change', (e) => {
-            if (e.target.files.length > 0) {
-                readFile(e.target.files[0]);
-            }
-        });
-
-        function readFile(file) {
-            const r = new FileReader();
-            r.onload = (e) => {
-                wgInput.value = e.target.result;
-                render();
-                showToast(`Загружен ${file.name}`);
-            };
-            r.readAsText(file);
-        }
-
-        // Copy JSON
-        document.getElementById('copyBtn').addEventListener('click', () => {
-            const str = jsonOutput.textContent;
-            if (!str || str.startsWith('//')) return;
-            
-            const ta = document.createElement("textarea");
-            ta.value = str;
-            document.body.appendChild(ta);
-            ta.select();
-            document.execCommand("copy");
-            document.body.removeChild(ta);
-            showToast("JSON скопирован в буфер обмена");
-        });
-
-        // Download JSON
-        document.getElementById('downloadBtn').addEventListener('click', () => {
-            const str = jsonOutput.textContent;
-            if (!str || str.startsWith('//')) return;
-
-            const blob = new Blob([str], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'config.json';
-            a.click();
-            URL.revokeObjectURL(url);
-            showToast("Скачан config.json");
-        });
-
-        // Initial empty state render
-        render();
-    </script>
-</body>
-</html>
+                        else if (key === 'persistentkeepalive') res.keepAlive = p
