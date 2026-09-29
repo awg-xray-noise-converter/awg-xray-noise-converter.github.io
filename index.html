@@ -57,7 +57,7 @@
 <p class="text-xs text-slate-900 dark:text-white font-medium">
     Использованные ресурсы: 
     <a href="https://sageptr.github.io/mini_quic_generator" target="_blank" class="hover:text-sky-500 dark:hover:text-sky-400 hover:underline transition-colors text-slate-900 dark:text-white">
-        mini_quic_generator sageptr</a>,
+        mini_quic_generator</a>,
     <a href="https://github.com/SolverNA/awg-to-xray-warp" target="_blank" class="hover:text-sky-500 dark:hover:text-sky-400 hover:underline transition-colors text-slate-900 dark:text-white">
 	awg-to-xray-warp
     </a>
@@ -92,7 +92,7 @@
                         Настройки шаблона
                     </span>
                     <p class="text-[13px] text-slate-400 dark:text-slate-500 mt-0.5">
-                        💡 Если не указан hex и rand то они убираются из конфига.
+                        💡 Если не указан hex и rand (или они равны 0), то они убираются из конфига.
                     </p>
                 </div>
                 <button id="resetDefaultsBtn" class="text-xs text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 underline self-start sm:self-auto">Сбросить настройки</button>
@@ -664,7 +664,7 @@ PersistentKeepalive = 5"></textarea>
             const noiseDelayVal = optNoiseDelay.value.trim();
             const noisePacketVal = optNoisePacket.value.trim();
 
-            if (noiseDelayVal && noisePacketVal) {
+            if (noiseDelayVal && noisePacketVal && noiseDelayVal !== '0') {
                 noises.push({
                     delay: noiseDelayVal,
                     packet: noisePacketVal,
@@ -672,18 +672,18 @@ PersistentKeepalive = 5"></textarea>
                 });
             }
 
-            const randCount = parseInt(optRandCount.value, 10) || 0;
+            const rawRandCount = parseInt(optRandCount.value.trim(), 10);
+            const randCount = !isNaN(rawRandCount) && rawRandCount > 0 ? rawRandCount : 0;
             const randSize = optRandSize.value.trim();
             const randDelay = optRandDelay.value.trim();
 
-            if (randCount > 0 && randSize) {
+            if (randCount > 0 && randSize && randSize !== '0' && randDelay && randDelay !== '0') {
                 for (let i = 0; i < randCount; i++) {
-                    const randObj = {
-                        delay: randDelay || "1-3",
+                    noises.push({
+                        delay: randDelay,
                         packet: randSize,
                         type: "rand"
-                    };
-                    noises.push(randObj);
+                    });
                 }
             }
 
@@ -894,7 +894,7 @@ PersistentKeepalive = 5"></textarea>
 
             const blob = new Blob([str], { type: 'application/json' });
             const url = URL.createObjectURL(blob);
-            const a = document.com.createElement('a');
+            const a = document.createElement('a');
             a.href = url;
             a.download = 'config.json';
             a.click();
