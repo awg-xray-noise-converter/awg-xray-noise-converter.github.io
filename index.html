@@ -51,17 +51,17 @@
                     <i data-lucide="zap" class="w-5 h-5"></i>
                 </div>
                 <div>
-<p class="text-xs text-slate-500 dark:text-slate-400">
-    Конвертер WG & AWG в Xray full config
-</p>
-<p class="text-xs text-slate-900 dark:text-white font-medium">
-    Использованные ресурсы: 
-    <a href="https://sageptr.github.io/mini_quic_generator" target="_blank" class="hover:text-sky-500 dark:hover:text-sky-400 hover:underline transition-colors text-slate-900 dark:text-white">
-        mini_quic_generator</a>,
-    <a href="https://github.com/SolverNA/awg-to-xray-warp" target="_blank" class="hover:text-sky-500 dark:hover:text-sky-400 hover:underline transition-colors text-slate-900 dark:text-white">
-	awg-to-xray-warp
-    </a>
-</p>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">
+                        Конвертер WG & AWG в Xray full config
+                    </p>
+                    <p class="text-xs text-slate-900 dark:text-white font-medium">
+                        Использованные ресурсы: 
+                        <a href="https://sageptr.github.io/mini_quic_generator" target="_blank" class="hover:text-sky-500 dark:hover:text-sky-400 hover:underline transition-colors text-slate-900 dark:text-white">
+                            mini_quic_generator</a>,
+                        <a href="https://github.com/SolverNA/awg-to-xray-warp" target="_blank" class="hover:text-sky-500 dark:hover:text-sky-400 hover:underline transition-colors text-slate-900 dark:text-white">
+                        awg-to-xray-warp
+                        </a>
+                    </p>
                 </div>
             </div>
 
@@ -76,12 +76,6 @@
 
     <!-- Main Container -->
     <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
-
-        <!-- Notification Toast -->
-        <div id="toast" class="hidden fixed bottom-5 right-5 z-50 bg-slate-900 dark:bg-slate-800 border border-slate-700 text-white px-4 py-3 rounded-xl shadow-2xl flex items-center gap-3 transition-all duration-300 transform translate-y-2">
-            <i id="toastIcon" data-lucide="check-circle" class="w-5 h-5 text-emerald-400"></i>
-            <span id="toastMsg" class="text-sm font-medium">Готово</span>
-        </div>
 
         <!-- Custom Options Bar -->
         <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 shadow-xl space-y-4">
@@ -136,23 +130,39 @@
                     <input type="text" id="optRandDelay" value="1-3" placeholder="1-3" class="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg px-3 py-2 text-slate-900 dark:text-slate-100 focus:outline-none focus:border-sky-500 font-mono">
                 </div>
 
-                <!-- Option: Disable IPv6 -->
-                <div class="sm:col-span-2 lg:col-span-4 flex items-center gap-2 pt-1">
-                    <input type="checkbox" id="optDisableIpv6" autocomplete="off" class="w-4 h-4 text-sky-600 bg-slate-50 dark:bg-slate-950 border-slate-300 dark:border-slate-800 rounded focus:ring-sky-500">
-                    <label for="optDisableIpv6" class="font-medium text-slate-700 dark:text-slate-300 cursor-pointer select-none">
-                        Отключить IPv6 <span class="font-normal text-slate-400 dark:text-slate-500 text-[11px]">(если проблемы с подключением)</span>
-                    </label>
+                <!-- Options Checkboxes -->
+                <div class="sm:col-span-2 lg:col-span-4 flex flex-col gap-2 pt-1">
+                    <div class="flex flex-wrap items-center gap-4">
+                        <div class="flex items-center gap-2">
+                            <input type="checkbox" id="optDisableIpv6" autocomplete="off" class="w-4 h-4 text-sky-600 bg-slate-50 dark:bg-slate-950 border-slate-300 dark:border-slate-800 rounded focus:ring-sky-500">
+                            <label for="optDisableIpv6" class="font-medium text-slate-700 dark:text-slate-300 cursor-pointer select-none">
+                                Отключить IPv6 <span class="font-normal text-slate-400 dark:text-slate-500 text-[11px]">(если проблемы с подключением)</span>
+                            </label>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <input type="checkbox" id="optUseI1" autocomplete="off" class="w-4 h-4 text-sky-600 bg-slate-50 dark:bg-slate-950 border-slate-300 dark:border-slate-800 rounded focus:ring-sky-500">
+                            <label for="optUseI1" class="font-medium text-slate-700 dark:text-slate-300 cursor-pointer select-none">
+                                Использовать I1 из конфига <span class="font-normal text-slate-400 dark:text-slate-500 text-[11px]">(перезаписывает Packet Hex)</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <!-- Четко выделенный блок с ошибкой прямо под чекбоксами -->
+                    <div id="i1ErrorMsg" class="hidden w-full text-rose-500 dark:text-rose-400 font-medium text-xs bg-rose-500/10 border border-rose-500/20 p-2.5 rounded-xl flex items-center gap-2">
+                        <i data-lucide="alert-triangle" class="w-4 h-4 text-rose-500 shrink-0"></i>
+                        <span>В загруженном .conf файле отсутствует параметр I1!</span>
+                    </div>
                 </div>
 
                 <!-- QUIC Domain Input (Автогенерация на лету) -->
-                <div class="sm:col-span-2 lg:col-span-4 border-t border-slate-200 dark:border-slate-800 pt-3 mt-1 flex flex-col justify-end">
+                <div id="quicSniContainer" class="sm:col-span-2 lg:col-span-4 border-t border-slate-200 dark:border-slate-800 pt-3 mt-1 flex flex-col justify-end transition-opacity duration-200">
                     <label class="block font-medium text-slate-700 dark:text-slate-300 mb-1">Генератор QUIC (SNI Domain)</label>
                     <input type="text" id="quicSniInput" value="yahoo.com" placeholder="yahoo.com" class="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg px-3 py-2 text-slate-900 dark:text-slate-100 focus:outline-none focus:border-sky-500 font-mono text-xs">
                 </div>
 
-                <div class="sm:col-span-2 lg:col-span-4 flex flex-col justify-end">
+                <div id="optNoisePacketContainer" class="sm:col-span-2 lg:col-span-4 flex flex-col justify-end transition-opacity duration-200">
                     <label class="block font-medium text-slate-700 dark:text-slate-300 mb-1">Packet Hex (Шум)</label>
-                    <input type="text" id="optNoisePacket" value="" placeholder="Вводится вручную или генерируется через SNI..." class="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg px-3 py-2 text-sky-600 dark:text-sky-400 font-mono focus:outline-none focus:border-sky-500 text-xs">
+                    <textarea id="optNoisePacket" rows="2" placeholder="Вводится вручную, берутся данные из I1 .conf илигенерируется через SNI..." class="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg px-3 py-2 text-sky-600 dark:text-sky-400 font-mono focus:outline-none focus:border-sky-500 text-xs resize-y"></textarea>
                 </div>
             </div>
         </div>
@@ -222,7 +232,7 @@ PersistentKeepalive = 5"></textarea>
         </div>
     </main>
 
-    <!-- QUIC Crypto Logic from script.js -->
+    <!-- QUIC Crypto Logic -->
     <script>
         const c = window.crypto.subtle;
         let quicHmacKey = null;
@@ -469,7 +479,6 @@ PersistentKeepalive = 5"></textarea>
             return payload;
         }
 
-        // Функция генерации Uncut Hex
         async function generateQuicUncutHex(sniDomain) {
             if (!sniDomain) return '';
             const dcid = new Uint8Array(1);
@@ -486,17 +495,16 @@ PersistentKeepalive = 5"></textarea>
         }
     </script>
 
-    <!-- Main Application UI Logic -->
+    <!-- UI Logic -->
     <script>
         document.addEventListener('DOMContentLoaded', async () => {
             if (window.lucide) {
                 lucide.createIcons();
             }
-            // Генерация пакета по умолчанию при загрузке страницы
             await updateQuicHex();
+            updateInputsState();
         });
 
-        // DOM elements
         const wgInput = document.getElementById('wgInput');
         const jsonOutput = document.getElementById('jsonOutput');
         const optRemarks = document.getElementById('optRemarks');
@@ -511,45 +519,45 @@ PersistentKeepalive = 5"></textarea>
         const optRandSize = document.getElementById('optRandSize');
         const optRandDelay = document.getElementById('optRandDelay');
         const optDisableIpv6 = document.getElementById('optDisableIpv6');
+        const optUseI1 = document.getElementById('optUseI1');
+        const i1ErrorMsg = document.getElementById('i1ErrorMsg');
 
         const quicSniInput = document.getElementById('quicSniInput');
+        const quicSniContainer = document.getElementById('quicSniContainer');
+        const optNoisePacketContainer = document.getElementById('optNoisePacketContainer');
 
-        if (optDisableIpv6) {
-            optDisableIpv6.checked = false;
-        }
+        if (optDisableIpv6) optDisableIpv6.checked = false;
+        if (optUseI1) optUseI1.checked = false;
 
-        const toast = document.getElementById('toast');
-        const toastMsg = document.getElementById('toastMsg');
         const dropZone = document.getElementById('dropZone');
         const dropOverlay = document.getElementById('dropOverlay');
         const fileInput = document.getElementById('fileInput');
 
-        // Переключение темы
         document.getElementById('themeToggle').addEventListener('click', () => {
             const isDark = document.documentElement.classList.toggle('dark');
             localStorage.setItem('theme', isDark ? 'dark' : 'light');
         });
 
+        // Функция отключена (уведомления не выводятся)
         function showToast(msg, isError = false) {
-            toastMsg.innerText = msg;
-            const icon = document.getElementById('toastIcon');
-            if (isError) {
-                icon.setAttribute('data-lucide', 'alert-circle');
-                icon.className = 'w-5 h-5 text-rose-400';
-            } else {
-                icon.setAttribute('data-lucide', 'check-circle');
-                icon.className = 'w-5 h-5 text-emerald-400';
-            }
-            if (window.lucide) lucide.createIcons();
-            toast.classList.remove('hidden');
-            setTimeout(() => toast.classList.remove('translate-y-2'), 10);
-            setTimeout(() => {
-                toast.classList.add('translate-y-2');
-                setTimeout(() => toast.classList.add('hidden'), 300);
-            }, 3000);
+            return;
         }
 
-        // Parse Wireguard INI
+        function updateInputsState() {
+            const isI1Active = optUseI1 && optUseI1.checked;
+
+            quicSniInput.disabled = isI1Active;
+            optNoisePacket.disabled = isI1Active;
+
+            if (isI1Active) {
+                quicSniContainer.classList.add('opacity-50', 'pointer-events-none');
+                optNoisePacketContainer.classList.add('opacity-50', 'pointer-events-none');
+            } else {
+                quicSniContainer.classList.remove('opacity-50', 'pointer-events-none');
+                optNoisePacketContainer.classList.remove('opacity-50', 'pointer-events-none');
+            }
+        }
+
         function parseWG(text) {
             const res = {
                 secretKey: '',
@@ -560,7 +568,8 @@ PersistentKeepalive = 5"></textarea>
                 endpoint: '',
                 keepAlive: null,
                 reserved: null,
-                remarkName: ''
+                remarkName: '',
+                i1: null
             };
 
             if (!text) return res;
@@ -602,6 +611,9 @@ PersistentKeepalive = 5"></textarea>
                         else if (key === 'mtu') res.mtu = parseInt(val, 10) || null;
                         else if (key === 'reserved') {
                             res.reserved = val.replace(/[\[\]]/g, '').split(',').map(s => parseInt(s.trim())).filter(n => !isNaN(n));
+                        } else if (key === 'i1') {
+                            let cleaned = val.replace(/^<b\s*/i, '').replace(/^0x/i, '').replace(/>$/, '').trim();
+                            res.i1 = cleaned;
                         }
                     } else if (section === 'peer') {
                         if (key === 'publickey') res.publicKey = val;
@@ -614,7 +626,6 @@ PersistentKeepalive = 5"></textarea>
             return res;
         }
 
-        // Generate Strict JSON Target Structure
         function generateStrictXray(parsed) {
             const socksPort = parseInt(optSocksPort.value, 10) || 10808;
             const httpPort = parseInt(optHttpPort.value, 10) || 10809;
@@ -660,7 +671,6 @@ PersistentKeepalive = 5"></textarea>
             }
 
             const noises = [];
-
             const noiseDelayVal = optNoiseDelay.value.trim();
             const noisePacketVal = optNoisePacket.value.trim();
 
@@ -688,25 +698,14 @@ PersistentKeepalive = 5"></textarea>
             }
 
             const config = {
-                dns: {
-                    servers: dnsList
-                },
+                dns: { servers: dnsList },
                 inbounds: [
                     {
                         listen: "127.0.0.1",
                         port: socksPort,
                         protocol: "socks",
-                        settings: {
-                            auth: "noauth",
-                            udp: true
-                        },
-                        sniffing: {
-                            destOverride: [
-                                "http",
-                                "tls"
-                            ],
-                            enabled: true
-                        },
+                        settings: { auth: "noauth", udp: true },
+                        sniffing: { destOverride: ["http", "tls"], enabled: true },
                         tag: "socks-in"
                     },
                     {
@@ -714,36 +713,21 @@ PersistentKeepalive = 5"></textarea>
                         port: httpPort,
                         protocol: "http",
                         settings: {},
-                        sniffing: {
-                            destOverride: [
-                                "http",
-                                "tls"
-                            ],
-                            enabled: true
-                        },
+                        sniffing: { destOverride: ["http", "tls"], enabled: true },
                         tag: "http-in"
                     }
                 ],
-                log: {
-                    loglevel: "warning"
-                },
+                log: { loglevel: "warning" },
                 outbounds: [
                     {
                         protocol: "wireguard",
                         settings: wgOutboundSettings,
-                        streamSettings: {
-                            sockopt: {
-                                dialerProxy: "noise-out"
-                            }
-                        },
+                        streamSettings: { sockopt: { dialerProxy: "noise-out" } },
                         tag: "conf"
                     },
                     {
                         protocol: "freedom",
-                        settings: {
-                            domainStrategy: "AsIs",
-                            noises: noises
-                        },
+                        settings: { domainStrategy: "AsIs", noises: noises },
                         tag: "noise-out"
                     }
                 ],
@@ -751,11 +735,7 @@ PersistentKeepalive = 5"></textarea>
                 routing: {
                     domainStrategy: "AsIs",
                     rules: [
-                        {
-                            network: "tcp,udp",
-                            outboundTag: "conf",
-                            type: "field"
-                        }
+                        { network: "tcp,udp", outboundTag: "conf", type: "field" }
                     ]
                 }
             };
@@ -767,11 +747,28 @@ PersistentKeepalive = 5"></textarea>
             const text = wgInput.value.trim();
             if (!text) {
                 jsonOutput.textContent = "// Вставьте Wireguard (.conf) конфигурацию слева";
+                if (optUseI1.checked) {
+                    optUseI1.checked = false;
+                    updateInputsState();
+                    updateQuicHex();
+                }
                 return;
             }
 
             try {
                 const parsed = parseWG(text);
+
+                if (optUseI1.checked && !parsed.i1) {
+                    optUseI1.checked = false;
+                    i1ErrorMsg.classList.remove('hidden');
+                    updateInputsState();
+                    updateQuicHex();
+                } else if (parsed.i1) {
+                    if (optUseI1.checked) {
+                        i1ErrorMsg.classList.add('hidden');
+                        optNoisePacket.value = parsed.i1;
+                    }
+                }
 
                 if (!parsed.secretKey || !parsed.publicKey || !parsed.endpoint) {
                     jsonOutput.textContent = "// Некорректная конфигурация";
@@ -785,8 +782,8 @@ PersistentKeepalive = 5"></textarea>
             }
         }
 
-        // Обновление QUIC Hex «на лету»
         async function updateQuicHex() {
+            if (optUseI1 && optUseI1.checked) return;
             const sni = quicSniInput.value.trim();
             if (sni) {
                 try {
@@ -801,10 +798,29 @@ PersistentKeepalive = 5"></textarea>
             render();
         }
 
-        // Реактивный слушатель ввода SNI
         quicSniInput.addEventListener('input', updateQuicHex);
 
-        // Listeners для остальных полей
+        // Клик по чекбоксу I1
+        optUseI1.addEventListener('click', async (e) => {
+            const parsed = parseWG(wgInput.value.trim());
+
+            if (!optUseI1.checked) {
+                i1ErrorMsg.classList.add('hidden');
+                updateInputsState();
+                await updateQuicHex();
+            } else {
+                if (!parsed.i1) {
+                    e.preventDefault();
+                    optUseI1.checked = false;
+                    i1ErrorMsg.classList.remove('hidden');
+                    return;
+                }
+                i1ErrorMsg.classList.add('hidden');
+                updateInputsState();
+                render();
+            }
+        });
+
         [wgInput, optRemarks, optNoiseDelay, optNoisePacket, optSocksPort, optHttpPort, optKeepAlive, optMtu, optRandCount, optRandSize, optRandDelay, optDisableIpv6].forEach(el => {
             if (el) {
                 el.addEventListener(el.type === 'checkbox' ? 'change' : 'input', render);
@@ -813,8 +829,8 @@ PersistentKeepalive = 5"></textarea>
 
         document.getElementById('clearBtn').addEventListener('click', () => {
             wgInput.value = '';
+            i1ErrorMsg.classList.add('hidden');
             render();
-            showToast("Очищено");
         });
 
         document.getElementById('resetDefaultsBtn').addEventListener('click', async () => {
@@ -828,13 +844,14 @@ PersistentKeepalive = 5"></textarea>
             optRandSize.value = '23-911';
             optRandDelay.value = '1-3';
             quicSniInput.value = 'yahoo.com';
+            i1ErrorMsg.classList.add('hidden');
             if (optDisableIpv6) optDisableIpv6.checked = false;
+            if (optUseI1) optUseI1.checked = false;
             
+            updateInputsState();
             await updateQuicHex();
-            showToast("Настройки сброшены");
         });
 
-        // Drag & drop
         ['dragenter', 'dragover'].forEach(evt => {
             dropZone.addEventListener(evt, (e) => {
                 e.preventDefault();
@@ -868,12 +885,10 @@ PersistentKeepalive = 5"></textarea>
             r.onload = (e) => {
                 wgInput.value = e.target.result;
                 render();
-                showToast(`Загружен ${file.name}`);
             };
             r.readAsText(file);
         }
 
-        // Copy JSON
         document.getElementById('copyBtn').addEventListener('click', () => {
             const str = jsonOutput.textContent;
             if (!str || str.startsWith('//')) return;
@@ -884,10 +899,8 @@ PersistentKeepalive = 5"></textarea>
             ta.select();
             document.execCommand("copy");
             document.body.removeChild(ta);
-            showToast("JSON скопирован в буфер обмена");
         });
 
-        // Download JSON
         document.getElementById('downloadBtn').addEventListener('click', () => {
             const str = jsonOutput.textContent;
             if (!str || str.startsWith('//')) return;
@@ -899,10 +912,8 @@ PersistentKeepalive = 5"></textarea>
             a.download = 'config.json';
             a.click();
             URL.revokeObjectURL(url);
-            showToast("Скачан config.json");
         });
 
-        // Первоначальный рендер
         render();
     </script>
 </body>
