@@ -142,7 +142,7 @@
                         <div class="flex items-center gap-2">
                             <input type="checkbox" id="optUseI1" autocomplete="off" class="w-4 h-4 text-sky-600 bg-slate-50 dark:bg-slate-950 border-slate-300 dark:border-slate-800 rounded focus:ring-sky-500">
                             <label for="optUseI1" class="font-medium text-slate-700 dark:text-slate-300 cursor-pointer select-none">
-                                Использовать I1 из конфига <span class="font-normal text-slate-400 dark:text-slate-500 text-[11px]">(перезаписывает Packet Hex)</span>
+                                Использовать I1 из конфига
                             </label>
                         </div>
                     </div>
@@ -193,7 +193,7 @@
                         <span>Перетащите `.conf` файл сюда</span>
                     </div>
 
-                    <textarea id="wgInput" spellcheck="false" class="w-full flex-1 min-h-[420px] bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-200 p-4 rounded-xl border border-slate-200 dark:border-slate-800 font-mono text-xs focus:outline-none focus:border-sky-500/80 resize-y" placeholder="[Interface]
+                    <textarea id="wgInput" spellcheck="false" class="w-full flex-1 min-h-[420px] bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-200 p-4 rounded-xl border border-slate-200 dark:border-slate-800 font-mono text-xs focus:outline-none focus:border-sky-500/80 resize-none" placeholder="[Interface]
 PrivateKey = ...
 Address = ...
 DNS = ...
@@ -907,7 +907,7 @@ PersistentKeepalive = 5"></textarea>
 
             const blob = new Blob([str], { type: 'application/json' });
             const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
+            const a = document.append('a');
             a.href = url;
             a.download = 'config.json';
             a.click();
